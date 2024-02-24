@@ -69,6 +69,8 @@ _
     },
 };
 sub bpom_rpo_ingredients_group_for_label {
+    require Text::CSV;
+
     my %args = @_;
 
     my $csv = Text::CSV->new({binary=>1, auto_diag=>1});
@@ -81,9 +83,10 @@ sub bpom_rpo_ingredients_group_for_label {
         my $row = $rows[$n];
         my ($num, $ingredient0, $weight, $ind_ingredient, $eng_ingredient, $ind_group, $eng_group) = @$row;
         my ($label_ingredient, $group) = $args{lang} eq 'eng' ? ($eng_ingredient, $eng_group) : ($ind_ingredient, $ind_group);
-        if (!$group) { $group = $label_ingredient }
+        my $has_group;
+        if ($group) { $has_group++ } else { $group = $label_ingredient }
         $weights{$ingredient0} = $weight;
-        $ingredients{ $group } //= {ingredient0 => $ingredient0};
+        $ingredients{ $group } //= {has_group=>$has_group, ingredient0 => $ingredient0};
         $ingredients{ $group }{weight} //= 0;
         $ingredients{ $group }{items} //= [];
         $ingredients{ $group }{items0} //= [];
@@ -92,12 +95,12 @@ sub bpom_rpo_ingredients_group_for_label {
         push @{ $ingredients{$group}{items0} }, $ingredient0;
     }
 
-    my @rows;
+    @rows = ();
     my $i = 0;
     for my $group (sort { ($ingredients{$b}{weight} <=> $ingredients{$a}{weight}) || ($a cmp $b) } keys %ingredients) {
         $i++;
         my $ingredient = $group;
-        if (@{ $ingredients{$group}{items} }) {
+        if ($ingredients{$group}{has_group}) {
             $ingredient .= " ";
             if (@{ $ingredients{$group}{items} } > 1) {
                 my @items = map { $ingredients{$group}{items}[$_] }
@@ -110,7 +113,7 @@ sub bpom_rpo_ingredients_group_for_label {
         push @rows, [$i, $ingredient, $ingredients{$group}{weight}];
     }
 
-    [200, "OK", $rows, {'table.fields'=>['No', 'Ingredient', '%weight']}];
+    [200, "OK", \@rows, {'table.fields'=>['No', 'Ingredient', '%weight']}];
 }
 
 1;
