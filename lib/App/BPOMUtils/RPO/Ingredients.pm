@@ -29,36 +29,36 @@ $SPEC{bpom_rpo_ingredients_group_for_label} = {
 
 This utility accepts a CSV data from stdin. The CSV must be formatted like this:
 
-    No,Ingredient,%weight,"Ingredient name for label (Indonesian)","Ingredient name for label (English)","Ingredient group for label (Indonesian)","Ingredient group for label (English)"
-    1,Air,78.48,Air,Water,,
-    2,Gula,16.00,Gula,Sugar,,
-    3,"Nata de coco",5.00,"Nata de coco 3%","Nata de coco 3%",,
-    4,"Asam sitrat",0.25,"Asam sitrat","Citric acid","Pengatur keasaman","Acidity regulator"
-    5,"Asam malat",0.10,"Asam malat","Malic acid","Pengatur keasaman","Acidity regulator"
-    6,"Grape flavor",0.10,Anggur,Grape,"Perisa sintetik","Synthetic flavoring"
-    7,"Tea flavor",0.05,Teh,Tea,"Perisa sintetik","Synthetic flavoring"
-    8,"Natrium benzoat",0.02,"Natrium benzoat","Sodium benzoate",Pengawet,Preservative
+    Ingredient,%weight,"Ingredient name for label (Indonesian)","Ingredient name for label (English)","Ingredient group for label (Indonesian)","Ingredient group for label (English)"
+    Air,78.48,Air,Water,,
+    Gula,16.00,Gula,Sugar,,
+    "Nata de coco",5.00,"Nata de coco 3%","Nata de coco 3%",,
+    "Asam sitrat",0.25,"Asam sitrat","Citric acid","Pengatur keasaman","Acidity regulator"
+    "Asam malat",0.10,"Asam malat","Malic acid","Pengatur keasaman","Acidity regulator"
+    "Grape flavor",0.10,Anggur,Grape,"Perisa sintetik","Synthetic flavoring"
+    "Tea flavor",0.05,Teh,Tea,"Perisa sintetik","Synthetic flavoring"
+    "Natrium benzoat",0.02,"Natrium benzoat","Sodium benzoate",Pengawet,Preservative
 
 It can then group the ingredients based on the ingredient group and generate
 this (for Indonesian, `--lang ind`):
 
-    No,Ingredient,%weight
-    1,Air,78.48
-    2,Gula,16.00
-    3,"Nata de coco 3%",5.00
-    4,"Pengatur keasaman (Asam sitrat, Asam malat)",0.35
-    5,"Perisa sintetik (Anggur, Teh)",0.15
-    6,"Pengawet Natrium benzoat",0.02
+    Ingredient,%weight
+    Air,78.48
+    Gula,16.00
+    "Nata de coco 3%",5.00
+    "Pengatur keasaman (Asam sitrat, Asam malat)",0.35
+    "Perisa sintetik (Anggur, Teh)",0.15
+    "Pengawet Natrium benzoat",0.02
 
 And for English, `--lang eng`:
 
-    No,Ingredient,%weight
-    1,Water,78.48
-    2,Sugar,16.00
-    3,"Nata de coco 3%",5.00
-    4,"Acidity regulator (Citric acid, Malic acid)",0.35
-    5,"Synthetic flavoring (Grape, Tea)",0.15
-    6,"Preservative Sodium benzoate",0.02
+    Ingredient,%weight
+    Water,78.48
+    Sugar,16.00
+    "Nata de coco 3%",5.00
+    "Acidity regulator (Citric acid, Malic acid)",0.35
+    "Synthetic flavoring (Grape, Tea)",0.15
+    "Preservative Sodium benzoate",0.02
 
 _
     args => {
@@ -81,7 +81,7 @@ sub bpom_rpo_ingredients_group_for_label {
     my %ingredients; # key = name, value = { weight=>, items=> }
     for my $n (1 .. $#rows) {
         my $row = $rows[$n];
-        my ($num, $ingredient0, $weight, $ind_ingredient, $eng_ingredient, $ind_group, $eng_group) = @$row;
+        my ($ingredient0, $weight, $ind_ingredient, $eng_ingredient, $ind_group, $eng_group) = @$row;
         my ($label_ingredient, $group) = $args{lang} eq 'eng' ? ($eng_ingredient, $eng_group) : ($ind_ingredient, $ind_group);
         my $has_group;
         if ($group) { $has_group++ } else { $group = $label_ingredient }
