@@ -1,3 +1,8 @@
+0.005   2024-02-25  Released-By: PERLANCAR; Urgency: medium
+
+        - Format Indonesian number with Indonesian locale.
+
+
 0.004   2024-02-25  Released-By: PERLANCAR; Urgency: medium
 
         - Support QUID & ingredient note formatting.
