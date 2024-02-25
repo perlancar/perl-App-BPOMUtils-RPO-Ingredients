@@ -1,3 +1,8 @@
+0.003   2024-02-25  Released-By: PERLANCAR; Urgency: medium
+
+        - [bugfix] Fix Rinci result metadata (extraneous column).
+
+
 0.002   2024-02-24  Released-By: PERLANCAR; Urgency: medium
 
         - Remove the 'num' field.
