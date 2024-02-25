@@ -110,7 +110,7 @@ sub bpom_rpo_ingredients_group_for_label {
                 $ingredient .= $ingredients{$group}{items}[0];
             }
         }
-        push @rows, [$i, $ingredient, $ingredients{$group}{weight}];
+        push @rows, [$ingredient, $ingredients{$group}{weight}];
     }
 
     [200, "OK", \@rows, {'table.fields'=>['No', 'Ingredient', '%weight']}];
