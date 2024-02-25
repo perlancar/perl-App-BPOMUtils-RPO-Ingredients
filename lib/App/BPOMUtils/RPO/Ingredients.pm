@@ -1,11 +1,13 @@
 package App::BPOMUtils::RPO::Ingredients;
 
 use 5.010001;
+use locale;
 use strict;
 use warnings;
 use Log::ger;
 
 use Exporter 'import';
+use POSIX 'setlocale', 'LC_ALL';
 
 # AUTHORITY
 # DATE
@@ -76,6 +78,11 @@ sub bpom_rpo_ingredients_group_for_label {
     my $csv = Text::CSV->new({binary=>1, auto_diag=>1});
     my @rows;
     while (my $row = $csv->getline(\*STDIN)) { push @rows, $row }
+
+    if ($args{lang} eq 'ind') {
+        POSIX::setlocale(LC_ALL, "id_ID.UTF-8") or die "Can't set locale to id_ID.UTF-8";
+    } else {
+    }
 
     my %weights; # key = ingredient name, value = weight
     my %ingredients; # key = name, value = { weight=>, items=> }
