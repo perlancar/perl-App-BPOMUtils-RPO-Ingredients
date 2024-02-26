@@ -68,6 +68,10 @@ _
             schema => ['str*', in=>['eng','ind']],
             default => 'ind',
         },
+        precision => {
+            schema => ['uint*'], # TODO: support -1 precision (e.g. 11% -> 10%)
+            default => 4,
+        },
     },
 };
 sub bpom_rpo_ingredients_group_for_label {
@@ -94,7 +98,7 @@ sub bpom_rpo_ingredients_group_for_label {
         my $label_ingredient = join(
             " ",
             $label_ingredient0,
-            ($quid ? (sprintf "%g%%", $weight) : ()),
+            ($quid ? (sprintf "%".(defined $args{precision} ? ".$args{precision}" : '')."g%%", $weight) : ()),
             ($note ? ("($note)") : ()),
         );
 
