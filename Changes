@@ -1,3 +1,10 @@
+0.006   2024-02-26  Released-By: PERLANCAR; Urgency: medium
+
+        - Add option --quid-precision, default to 4.
+
+        - Tweak formatting of weights.
+
+
 0.005   2024-02-25  Released-By: PERLANCAR; Urgency: medium
 
         - Format Indonesian number with Indonesian locale.
