@@ -24,6 +24,14 @@ $SPEC{':package'} = {
     v => 1.1,
 };
 
+sub _fmtfloat_max_precision {
+    my ($max_precision, $num) = @_;
+    my $res = sprintf "%.${max_precision}f", $num;
+    $res =~ s/0+\z//;
+    $res =~ s/[.,]\z//;
+    $res;
+}
+
 $SPEC{bpom_rpo_ingredients_group_for_label} = {
     v => 1.1,
     summary => 'Group ingredients suitable for food label',
@@ -68,7 +76,11 @@ _
             schema => ['str*', in=>['eng','ind']],
             default => 'ind',
         },
-        precision => {
+        #weight_precision => {
+        #    schema => ['uint*'],
+        #    default => 5,
+        #},
+        quid_precision => {
             schema => ['uint*'], # TODO: support -1 precision (e.g. 11% -> 10%)
             default => 4,
         },
@@ -98,7 +110,7 @@ sub bpom_rpo_ingredients_group_for_label {
         my $label_ingredient = join(
             " ",
             $label_ingredient0,
-            ($quid ? (sprintf "%".(defined $args{precision} ? ".$args{precision}" : '')."g%%", $weight) : ()),
+            ($quid ? (_fmtfloat_max_precision($args{quid_precision}, $weight) . '%') : ()),
             ($note ? ("($note)") : ()),
         );
 
