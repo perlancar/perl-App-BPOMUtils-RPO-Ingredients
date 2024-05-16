@@ -39,11 +39,8 @@ sub _fmt_inner_content {
     push @res, $lang eq 'eng' ? 'containing ' : 'mengandung ';
     push @res, $inner;
     if ($inner_content) {
-        if ($inner_content =~ /^(.+)-(.+)$/) {
-            push @res, ' ', _fmtfloat_max_precision($max_precision, $weight/100 * $1), '-', _fmtfloat_max_precision($max_precision, $weight/100 * $2), '%';
-        } else {
-            push @res, ' ', _fmtfloat_max_precision($max_precision, $weight/100 * $inner_content), '%';
-        }
+        $inner_content =~ s/\%\z//;
+        push @res, ' ', _fmtfloat_max_precision($max_precision, $inner_content), '%';
     }
     join "", @res;
 }
